@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ELTIA — دنیای هوش مصنوعی</title>
+<meta name="description" content="ELTIA؛ مرجع فارسی هوش مصنوعی با بیش از ۱۰۰ ابزار AI، تاریخچه، مفاهیم و دستیار هوشمند.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050505;--fg:#f5f5f5;--mut:#9b9b9b;--card:rgba(255,255,255,.05);--card2:rgba(255,255,255,.09);
+  --bd:rgba(255,255,255,.14);--inv:#0a0a0a;--glow:rgba(255,255,255,.18);
+}
+[data-theme="light"]{
+  --bg:#f1f1f1;--fg:#0a0a0a;--mut:#555;--card:rgba(0,0,0,.04);--card2:rgba(0,0,0,.08);
+  --bd:rgba(0,0,0,.15);--inv:#fafafa;--glow:rgba(0,0,0,.15);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);font-family:'Vazirmatn',Tahoma,sans-serif;line-height:1.9;overflow-x:hidden;transition:background .5s,color .5s}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(var(--bd) 1px,transparent 1px),linear-gradient(90deg,var(--bd) 1px,transparent 1px);
+  background-size:70px 70px;opacity:.18;mask-image:radial-gradient(ellipse at center,#000 30%,transparent 80%);-webkit-mask-image:radial-gradient(ellipse at center,#000 30%,transparent 80%)}
+#balls{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+main,header,footer,section{position:relative;z-index:1}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--fg);color:var(--bg)}
+::-webkit-scrollbar{width:8px}::-webkit-scrollbar-thumb{background:var(--mut);border-radius:8px}
+ 
+/* preloader */
+#loader{position:fixed;inset:0;z-index:999;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;transition:opacity .7s,visibility .7s}
+#loader.done{opacity:0;visibility:hidden}
+#loader .lt{font-family:'Space Grotesk',sans-serif;font-size:clamp(48px,12vw,120px);font-weight:700;letter-spacing:.2em;color:#fff;display:flex;direction:ltr}
+#loader .lt span{opacity:0;transform:translateY(40px);animation:up .6s forwards}
+@keyframes up{to{opacity:1;transform:none}}
+#loader .bar{width:220px;height:2px;background:#222;overflow:hidden;border-radius:2px}
+#loader .bar i{display:block;height:100%;width:0;background:#fff;animation:ld 1.6s forwards}
+@keyframes ld{to{width:100%}}
+ 
+#progress{position:fixed;top:0;right:0;height:3px;width:0;background:var(--fg);z-index:200}
+#cursor{position:fixed;width:340px;height:340px;border-radius:50%;pointer-events:none;z-index:1;
+  background:radial-gradient(circle,var(--glow),transparent 65%);transform:translate(-50%,-50%);left:-999px;top:-999px;transition:opacity .3s}
+ 
+/* nav */
+nav{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:100;width:min(1100px,94%);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 22px;border-radius:60px;
+  background:var(--card);border:1px solid var(--bd);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);transition:.4s}
+nav.scrolled{background:color-mix(in srgb,var(--bg) 70%,transparent)}
+.logo{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px;letter-spacing:.25em;direction:ltr;display:flex;align-items:center;gap:10px}
+.logo b{width:14px;height:14px;border-radius:50%;background:var(--fg);display:inline-block;animation:pulse 2.4s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 var(--glow)}50%{box-shadow:0 0 0 10px transparent}}
+.links{display:flex;gap:4px}
+.links a{padding:6px 14px;border-radius:30px;font-size:14px;color:var(--mut);transition:.3s}
+.links a:hover,.links a.active{background:var(--fg);color:var(--bg)}
+.tbtn{width:38px;height:38px;border-radius:50%;border:1px solid var(--bd);background:var(--card);color:var(--fg);cursor:pointer;font-size:16px;transition:.4s}
+.tbtn:hover{transform:rotate(180deg);background:var(--fg);color:var(--bg)}
+.burger{display:none}
+ 
+/* common */
+.wrap{width:min(1180px,92%);margin:auto}
+section{padding:110px 0}
+.eyebrow{display:inline-block;font-size:13px;letter-spacing:.2em;border:1px solid var(--bd);padding:4px 16px;border-radius:30px;color:var(--mut);margin-bottom:18px;background:var(--card);backdrop-filter:blur(8px)}
+h2.t{font-size:clamp(30px,5vw,56px);font-weight:900;line-height:1.3;margin-bottom:14px}
+p.sub{color:var(--mut);max-width:640px;font-size:17px}
+.reveal{opacity:0;transform:translateY(50px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 30px;border-radius:60px;font-weight:700;font-size:16px;cursor:pointer;border:1px solid var(--fg);font-family:inherit;transition:.35s;position:relative;overflow:hidden}
+.btn.fill{background:var(--fg);color:var(--bg)}
+.btn.ghost{background:transparent;color:var(--fg)}
+.btn:hover{transform:translateY(-4px);box-shadow:0 14px 40px var(--glow)}
+.btn.ghost:hover{background:var(--fg);color:var(--bg)}
+ 
+/* hero */
+#home{min-height:100vh;display:flex;align-items:center;text-align:center;padding-top:130px}
+.hero-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(70px,18vw,230px);line-height:1;letter-spacing:.08em;direction:ltr;
+  background:linear-gradient(110deg,var(--mut) 20%,var(--fg) 40%,var(--fg) 60%,var(--mut) 80%);background-size:250% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 5s linear infinite}
+@keyframes shine{to{background-position:-250% center}}
+.typed{font-size:clamp(18px,2.6vw,28px);min-height:46px;margin:6px 0 28px;color:var(--mut)}
+.typed::after{content:"|";animation:blink 1s infinite;margin-right:4px;color:var(--fg)}
+@keyframes blink{50%{opacity:0}}
+.cta{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:60px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:900px;margin:auto}
+.stat{padding:20px 10px;border:1px solid var(--bd);border-radius:22px;background:var(--card);backdrop-filter:blur(10px);transition:.4s}
+.stat:hover{transform:translateY(-8px);background:var(--card2)}
+.stat b{display:block;font-family:'Space Grotesk',sans-serif;font-size:clamp(28px,4vw,46px)}
+.stat span{color:var(--mut);font-size:14px}
+.scroll-hint{position:absolute;bottom:26px;left:50%;width:26px;height:44px;border:2px solid var(--mut);border-radius:20px;transform:translateX(-50%)}
+.scroll-hint::after{content:"";position:absolute;top:8px;left:50%;width:4px;height:8px;border-radius:4px;background:var(--fg);transform:translateX(-50%);animation:sc 1.6s infinite}
+@keyframes sc{to{transform:translate(-50%,16px);opacity:0}}
+ 
+/* marquee */
+.marquee{overflow:hidden;border-block:1px solid var(--bd);padding:18px 0;background:var(--card);backdrop-filter:blur(8px);direction:ltr}
+.marquee .track{display:flex;gap:46px;width:max-content;animation:mq 60s linear infinite}
+.marquee:hover .track{animation-play-state:paused}
+.marquee span{font-family:'Space Grotesk',sans-serif;font-size:22px;white-space:nowrap;color:var(--mut)}
+.marquee span::before{content:"✦";margin-right:46px;color:var(--fg)}
+@keyframes mq{to{transform:translateX(-50%)}}
+ 
+/* about / cards */
+.grid{display:grid;gap:20px}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.card{padding:28px;border:1px solid var(--bd);border-radius:26px;background:var(--card);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transition:transform .35s,background .35s,border-color .35s;position:relative;overflow:hidden;transform-style:preserve-3d}
+.card::after{content:"";position:absolute;inset:0;background:radial-gradient(400px circle at var(--mx,50%) var(--my,0%),var(--glow),transparent 45%);opacity:0;transition:.3s;pointer-events:none}
+.card:hover{background:var(--card2);border-color:var(--mut)}
+.card:hover::after{opacity:1}
+.card .ic{width:54px;height:54px;border-radius:16px;display:grid;place-items:center;font-size:24px;background:var(--fg);color:var(--bg);margin-bottom:18px;transition:.5s}
+.card:hover .ic{transform:rotate(360deg) scale(1.1);border-radius:50%}
+.card h3{font-size:20px;margin-bottom:6px}
+.card p{color:var(--mut);font-size:15px}
+.card small{display:block;margin-top:12px;font-family:'Space Grotesk',sans-serif;color:var(--mut);direction:ltr;text-align:right}
+ 
+.about-top{display:grid;grid-template-columns:1.1fr 1fr;gap:50px;align-items:center;margin-bottom:60px}
+.orbit{position:relative;aspect-ratio:1;max-width:420px;margin:auto;width:100%}
+.orbit .core{position:absolute;inset:34%;border-radius:50%;background:var(--fg);color:var(--bg);display:grid;place-items:center;font-family:'Space Grotesk';font-weight:700;font-size:28px;animation:pulse 3s infinite}
+.orbit .ring{position:absolute;border:1px dashed var(--mut);border-radius:50%;inset:0;animation:spin 24s linear infinite}
+.orbit .ring:nth-child(2){inset:12%;animation-duration:16s;animation-direction:reverse}
+.orbit .ring:nth-child(3){inset:22%;animation-duration:10s}
+.orbit .ring i{position:absolute;top:-7px;left:50%;width:14px;height:14px;border-radius:50%;background:var(--fg)}
+@keyframes spin{to{transform:rotate(360deg)}}
+ 
+/* timeline */
+.timeline{position:relative;margin-top:50px}
+.timeline::before{content:"";position:absolute;top:0;bottom:0;right:50%;width:2px;background:linear-gradient(var(--fg),transparent);transform:translateX(50%)}
+.tl{display:flex;justify-content:flex-start;width:50%;padding:0 0 38px 40px;position:relative}
+.tl:nth-child(even){margin-right:50%;padding:0 40px 38px 0;justify-content:flex-end}
+.tl::after{content:"";position:absolute;top:22px;left:-9px;width:18px;height:18px;border-radius:50%;background:var(--bg);border:3px solid var(--fg)}
+.tl:nth-child(even)::after{left:auto;right:-9px}
+.tl .card{width:100%;padding:20px 24px}
+.tl .yr{font-family:'Space Grotesk';font-size:28px;font-weight:700}
+ 
+/* tools */
+.toolbar{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin:34px 0 20px}
+.search{flex:1;min-width:240px;position:relative}
+.search input{width:100%;padding:15px 52px 15px 20px;border-radius:60px;border:1px solid var(--bd);background:var(--card);color:var(--fg);font-family:inherit;font-size:16px;outline:none;backdrop-filter:blur(10px);transition:.3s}
+.search input:focus{border-color:var(--fg);box-shadow:0 0 0 4px var(--glow)}
+.search::before{content:"⌕";position:absolute;right:20px;top:50%;transform:translateY(-52%);font-size:24px;color:var(--mut)}
+select{padding:14px 20px;border-radius:60px;border:1px solid var(--bd);background:var(--bg);color:var(--fg);font-family:inherit;font-size:15px;outline:none;cursor:pointer}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.chip{padding:7px 18px;border-radius:40px;border:1px solid var(--bd);background:var(--card);color:var(--mut);cursor:pointer;font-family:inherit;font-size:14px;transition:.3s}
+.chip:hover{color:var(--fg);border-color:var(--fg)}
+.chip.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+#count{color:var(--mut);font-size:14px;margin-bottom:20px}
+.tool{display:flex;flex-direction:column;gap:6px;opacity:0;transform:translateY(30px) scale(.97);animation:pop .6s forwards}
+@keyframes pop{to{opacity:1;transform:none}}
+.tool .top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.tool h3{font-family:'Space Grotesk',sans-serif;font-size:20px;direction:ltr}
+.badge{font-size:12px;padding:2px 12px;border-radius:20px;border:1px solid var(--bd);white-space:nowrap;color:var(--mut)}
+.badge.free{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.tool .co{font-size:13px;color:var(--mut);direction:ltr;text-align:right}
+.tool .ds{font-size:14.5px;flex:1;margin:4px 0 8px;color:var(--fg);opacity:.85}
+.tool .ft{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--mut)}
+.tool .ft a{padding:5px 16px;border-radius:30px;border:1px solid var(--bd);color:var(--fg);transition:.3s}
+.tool .ft a:hover{background:var(--fg);color:var(--bg)}
+.empty{text-align:center;padding:60px;color:var(--mut);display:none}
+.note{margin-top:30px;font-size:13px;color:var(--mut);text-align:center}
+ 
+/* chat */
+.chat{max-width:900px;margin:40px auto 0;border:1px solid var(--bd);border-radius:30px;overflow:hidden;background:color-mix(in srgb,var(--bg) 60%,transparent);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 30px 80px var(--glow)}
+.chat-h{display:flex;align-items:center;gap:14px;padding:16px 24px;border-bottom:1px solid var(--bd);background:var(--card)}
+.avatar{width:44px;height:44px;border-radius:50%;background:var(--fg);color:var(--bg);display:grid;place-items:center;font-family:'Space Grotesk';font-weight:700;animation:pulse 2.6s infinite}
+.chat-h small{display:block;color:var(--mut);font-size:12px;line-height:1.4}
+.chat-h .on{width:9px;height:9px;border-radius:50%;background:#3ddc84;display:inline-block;margin-left:6px}
+#msgs{height:440px;overflow-y:auto;padding:22px;display:flex;flex-direction:column;gap:14px;scroll-behavior:smooth}
+.m{max-width:86%;padding:12px 18px;border-radius:20px;font-size:15px;animation:pop .4s forwards;opacity:0;transform:translateY(16px)}
+.m.bot{background:var(--card2);border:1px solid var(--bd);border-top-right-radius:4px;align-self:flex-start}
+.m.user{background:var(--fg);color:var(--bg);border-top-left-radius:4px;align-self:flex-end}
+.m b{font-weight:700}
+.m ul{padding-right:20px;margin:6px 0}
+.mini{display:block;margin:8px 0;padding:10px 14px;border:1px solid var(--bd);border-radius:14px;background:var(--card)}
+.mini strong{font-family:'Space Grotesk';direction:ltr;display:inline-block}
+.mini em{font-style:normal;color:var(--mut);font-size:12px;margin-right:6px}
+.mini a{text-decoration:underline;font-size:12px;color:var(--mut)}
+.dots span{display:inline-block;width:7px;height:7px;margin:0 2px;border-radius:50%;background:var(--mut);animation:dot 1s infinite}
+.dots span:nth-child(2){animation-delay:.15s}.dots span:nth-child(3){animation-delay:.3s}
+@keyframes dot{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.sugg{display:flex;gap:8px;flex-wrap:wrap;padding:0 22px 14px}
+.chat-f{display:flex;gap:10px;padding:16px 20px;border-top:1px solid var(--bd);background:var(--card)}
+.chat-f input{flex:1;padding:13px 20px;border-radius:40px;border:1px solid var(--bd);background:var(--bg);color:var(--fg);font-family:inherit;font-size:15px;outline:none}
+.chat-f input:focus{border-color:var(--fg)}
+.chat-f button{padding:0 26px;border-radius:40px;border:none;background:var(--fg);color:var(--bg);font-family:inherit;font-weight:700;cursor:pointer;transition:.3s}
+.chat-f button:hover{transform:scale(1.06)}
+ 
+/* faq */
+.faq{max-width:860px;margin:40px auto 0;display:grid;gap:12px}
+.q{border:1px solid var(--bd);border-radius:20px;background:var(--card);backdrop-filter:blur(10px);overflow:hidden;transition:.3s}
+.q button{width:100%;text-align:right;padding:18px 24px;background:none;border:none;color:var(--fg);font-family:inherit;font-size:17px;font-weight:700;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.q button i{font-style:normal;font-size:24px;transition:.4s}
+.q .a{max-height:0;overflow:hidden;transition:max-height .5s;padding:0 24px;color:var(--mut)}
+.q.open{border-color:var(--mut)}
+.q.open .a{max-height:300px;padding-bottom:18px}
+.q.open button i{transform:rotate(45deg)}
+ 
+footer{padding:60px 0 30px;border-top:1px solid var(--bd);background:color-mix(in srgb,var(--bg) 70%,transparent);backdrop-filter:blur(10px)}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.foot p{color:var(--mut);font-size:14px}
+#top{position:fixed;bottom:26px;left:26px;width:48px;height:48px;border-radius:50%;border:1px solid var(--fg);background:var(--bg);color:var(--fg);font-size:20px;cursor:pointer;z-index:100;opacity:0;pointer-events:none;transition:.4s}
+#top.show{opacity:1;pointer-events:auto}
+#top:hover{background:var(--fg);color:var(--bg);transform:translateY(-6px)}
+ 
+@media(max-width:900px){
+  .links{position:fixed;top:78px;right:3%;left:3%;flex-direction:column;background:var(--bg);border:1px solid var(--bd);border-radius:24px;padding:14px;display:none}
+  .links.open{display:flex}
+  .burger{display:block}
+  .g3,.g4{grid-template-columns:1fr 1fr}
+  .about-top{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr}
+  .timeline::before{right:14px}
+  .tl,.tl:nth-child(even){width:100%;margin:0;padding:0 44px 30px 0;justify-content:flex-start}
+  .tl::after,.tl:nth-child(even)::after{left:auto;right:5px}
+}
+@media(max-width:560px){.g3,.g4{grid-template-columns:1fr}section{padding:80px 0}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01s!important;transition-duration:.01s!important}}
+</style>
+</head>
+<body>
+ 
+<div id="loader"><div class="lt"></div><div class="bar"><i></i></div></div>
+<div id="progress"></div>
+<div id="cursor"></div>
+<canvas id="balls"></canvas>
+ 
+<nav id="nav">
+  <a href="#home" class="logo"><b></b>ELTIA</a>
+  <div class="links" id="links">
+    <a href="#home">خانه</a><a href="#about">هوش مصنوعی چیست؟</a><a href="#types">شاخه‌ها</a>
+    <a href="#history">تاریخچه</a><a href="#tools">ابزارها</a><a href="#assistant">هوش مصنوعی سایت</a><a href="#faq">سؤالات</a>
+  </div>
+  <div style="display:flex;gap:8px">
+    <button class="tbtn" id="theme" title="تغییر تم" aria-label="تغییر تم">◐</button>
+    <button class="tbtn burger" id="burger" aria-label="منو">☰</button>
+  </div>
+</nav>
+ 
+<header id="home">
+  <div class="wrap">
+    <span class="eyebrow reveal">ARTIFICIAL INTELLIGENCE · HUB</span>
+    <h1 class="hero-title reveal">ELTIA</h1>
+    <div class="typed reveal" id="typed"></div>
+    <div class="cta reveal">
+      <a href="#tools" class="btn fill">کاوش در ابزارها ←</a>
+      <a href="#assistant" class="btn ghost">گفتگو با هوش مصنوعی سایت</a>
+    </div>
+    <div class="stats reveal">
+      <div class="stat"><b data-n="0" id="s-tools">0</b><span>ابزار هوش مصنوعی</span></div>
+      <div class="stat"><b data-n="0" id="s-cats">0</b><span>دسته‌بندی</span></div>
+      <div class="stat"><b data-n="70">0</b><span>سال از ۱۹۵۶ تا امروز</span></div>
+      <div class="stat"><b data-n="30" id="s-faq">0</b><span>مفهوم پایه در دستیار</span></div>
+    </div>
+  </div>
+  <div class="scroll-hint"></div>
+</header>
+ 
+<div class="marquee"><div class="track" id="mq"></div></div>
+ 
+<main>
+<section id="about">
+  <div class="wrap">
+    <div class="about-top">
+      <div class="reveal">
+        <span class="eyebrow">01 · ABOUT AI</span>
+        <h2 class="t">هوش مصنوعی چیست؟</h2>
+        <p class="sub">هوش مصنوعی (Artificial Intelligence) شاخه‌ای از علوم کامپیوتر است که هدفش ساخت سیستم‌هایی است که کارهایی را انجام دهند که معمولاً به هوش انسانی نیاز دارند: یادگیری، استدلال، درک زبان، تشخیص تصویر، تصمیم‌گیری و تولید محتوا.</p>
+        <p class="sub" style="margin-top:14px">اصطلاح «Artificial Intelligence» را جان مک‌کارتی در پیشنهاد کارگاه تابستانی دارتموث در سال ۱۹۵۵ به کار برد و این کارگاه در سال ۱۹۵۶ برگزار شد؛ به همین دلیل سال ۱۹۵۶ را آغاز رسمی این حوزه می‌دانند.</p>
+      </div>
+      <div class="orbit reveal">
+        <div class="ring"><i></i></div><div class="ring"><i></i></div><div class="ring"><i></i></div>
+        <div class="core">AI</div>
+      </div>
+    </div>
+    <div class="grid g3">
+      <div class="card reveal"><div class="ic">◐</div><h3>هوش مصنوعی محدود (ANI)</h3><p>تنها در یک کار مشخص توانمند است؛ مثل ترجمه، تشخیص چهره یا توصیه فیلم. همه سیستم‌های امروزی در این دسته قرار می‌گیرند.</p><small>Artificial Narrow Intelligence</small></div>
+      <div class="card reveal"><div class="ic">◆</div><h3>هوش مصنوعی عمومی (AGI)</h3><p>سیستمی فرضی که بتواند مانند انسان در طیف وسیعی از کارها یاد بگیرد و استدلال کند. هنوز تعریف دقیق و توافق‌شده‌ای برای آن وجود ندارد.</p><small>Artificial General Intelligence</small></div>
+      <div class="card reveal"><div class="ic">✦</div><h3>ابرهوش مصنوعی (ASI)</h3><p>مفهومی نظری از هوشی که در همه زمینه‌ها از بهترین انسان‌ها فراتر باشد. فعلاً موضوع بحث‌های پژوهشی و فلسفی است، نه یک فناوری موجود.</p><small>Artificial Super Intelligence</small></div>
+    </div>
+  </div>
+</section>
+ 
+<section id="types">
+  <div class="wrap">
+    <div class="reveal"><span class="eyebrow">02 · BRANCHES</span><h2 class="t">شاخه‌های اصلی هوش مصنوعی</h2><p class="sub">هر کدام از این حوزه‌ها بخشی از دنیای AI را می‌سازند و اغلب در کنار هم استفاده می‌شوند.</p></div>
+    <div class="grid g4" style="margin-top:40px">
+      <div class="card reveal"><div class="ic">∑</div><h3>یادگیری ماشین</h3><p>الگوریتم‌هایی که به‌جای برنامه‌نویسی قانون‌به‌قانون، از داده‌ها الگو را یاد می‌گیرند.</p><small>Machine Learning</small></div>
+      <div class="card reveal"><div class="ic">▦</div><h3>یادگیری عمیق</h3><p>زیرمجموعه‌ای از ML که از شبکه‌های عصبی چندلایه برای یادگیری ویژگی‌های پیچیده استفاده می‌کند.</p><small>Deep Learning</small></div>
+      <div class="card reveal"><div class="ic">❝</div><h3>پردازش زبان طبیعی</h3><p>درک و تولید زبان انسان: ترجمه، خلاصه‌سازی، پرسش و پاسخ و چت‌بات‌ها.</p><small>NLP</small></div>
+      <div class="card reveal"><div class="ic">◉</div><h3>بینایی کامپیوتر</h3><p>تحلیل تصویر و ویدیو: تشخیص اشیا، چهره، تصاویر پزشکی و خودروهای خودران.</p><small>Computer Vision</small></div>
+      <div class="card reveal"><div class="ic">↻</div><h3>یادگیری تقویتی</h3><p>عامل با آزمون‌وخطا و دریافت پاداش یاد می‌گیرد؛ مثل AlphaGo در بازی گو و رباتیک.</p><small>Reinforcement Learning</small></div>
+      <div class="card reveal"><div class="ic">✺</div><h3>هوش مصنوعی مولد</h3><p>مدل‌هایی که متن، تصویر، صدا، ویدیو و کد تازه تولید می‌کنند؛ مثل مدل‌های زبانی و دیفیوژن.</p><small>Generative AI</small></div>
+      <div class="card reveal"><div class="ic">⚙</div><h3>عامل‌های هوشمند</h3><p>سیستم‌هایی که با ابزارها و چندمرحله‌ای کار می‌کنند: جستجو، اجرای کد، پر کردن فرم و انجام وظایف.</p><small>AI Agents</small></div>
+      <div class="card reveal"><div class="ic">⬡</div><h3>مدل‌های چندوجهی</h3><p>مدل‌هایی که هم‌زمان با متن، تصویر، صدا و گاهی ویدیو کار می‌کنند.</p><small>Multimodal</small></div>
+    </div>
+  </div>
+</section>
+ 
+<section id="history">
+  <div class="wrap">
+    <div class="reveal"><span class="eyebrow">03 · TIMELINE</span><h2 class="t">تاریخچه هوش مصنوعی</h2><p class="sub">از یک پرسش فلسفی تا جایزه نوبل؛ مهم‌ترین نقاط عطف.</p></div>
+    <div class="timeline" id="tl"></div>
+  </div>
+</section>
+ 
+<section id="tools">
+  <div class="wrap">
+    <div class="reveal"><span class="eyebrow">04 · DIRECTORY</span><h2 class="t">بیش از ۱۰۰ ابزار هوش مصنوعی</h2><p class="sub">جستجو کنید، فیلتر کنید و ابزار مناسب کارتان را پیدا کنید.</p></div>
+    <div class="toolbar reveal">
+      <div class="search"><input id="q" type="search" placeholder="جستجو: نام ابزار، شرکت یا کاربرد…"></div>
+      <select id="price"><option value="">همه قیمت‌ها</option><option value="free">رایگان / فریمیوم / متن‌باز</option><option value="open">فقط متن‌باز</option></select>
+      <select id="sort"><option value="pop">مرتب‌سازی: محبوبیت</option><option value="az">الفبا (A–Z)</option></select>
+    </div>
+    <div class="chips reveal" id="chips"></div>
+    <div id="count"></div>
+    <div class="grid g3" id="grid"></div>
+    <div class="empty" id="empty">ابزاری با این مشخصات پیدا نشد 🙁</div>
+    <p class="note">* نوع قیمت‌گذاری کلی است و ممکن است تغییر کند؛ برای اطلاعات به‌روز سایت رسمی هر ابزار را ببینید. نام‌های تجاری متعلق به صاحبان آن‌هاست.</p>
+  </div>
+</section>
+ 
+<section id="assistant">
+  <div class="wrap">
+    <div class="reveal" style="text-align:center"><span class="eyebrow">05 · AI OF THE SITE</span><h2 class="t">هوش مصنوعی سایت</h2><p class="sub" style="margin:auto">از «تیا» درباره ابزارها، مفاهیم و تاریخچه AI بپرسید. تیا از دانش داخلی همین سایت (۱۰۰+ ابزار و ۳۰ مفهوم) پاسخ می‌دهد.</p></div>
+    <div class="chat reveal">
+      <div class="chat-h"><div class="avatar">T</div><div><b>Tia · دستیار ELTIA</b><small><span class="on"></span>آنلاین · بدون نیاز به اینترنت</small></div></div>
+      <div id="msgs"></div>
+      <div class="sugg" id="sugg"></div>
+      <form class="chat-f" id="cf"><input id="ci" autocomplete="off" placeholder="سؤالتان را بنویسید… مثلاً «بهترین ابزار برای ساخت ویدیو»"><button type="submit">ارسال</button></form>
+    </div>
+  </div>
+</section>
+ 
+<section id="faq">
+  <div class="wrap">
+    <div class="reveal" style="text-align:center"><span class="eyebrow">06 · FAQ</span><h2 class="t">سؤالات پرتکرار</h2></div>
+    <div class="faq" id="faq"></div>
+  </div>
+</section>
+</main>
+ 
+<footer>
+  <div class="wrap foot">
+    <div><div class="logo"><b></b>ELTIA</div><p style="margin-top:8px">مرجع فارسی دنیای هوش مصنوعی · ساخته‌شده با ❤ و کمی منطق</p></div>
+    <p>اطلاعات این سایت جنبه آموزشی دارد و ممکن است با گذر زمان تغییر کند.<br>© <span id="yr"></span> ELTIA</p>
+  </div>
+</footer>
+<button id="top" aria-label="بالا">↑</button>
+ 
+<script>
+/* ============ DATA ============ */
+const CATS={chat:'چت‌بات و مدل زبانی',image:'تصویر',video:'ویدیو',audio:'صدا و موسیقی',code:'کدنویسی',write:'نوشتن و ترجمه',work:'بهره‌وری',research:'پژوهش',platform:'پلتفرم و فریمورک',edu:'آموزش',other:'کاربردهای دیگر'};
+// [name, company, cat, price(free|freemium|paid|open), description, url]
+const T=[
+['ChatGPT','OpenAI','chat','freemium','پرکاربردترین دستیار گفتگویی؛ نوشتن، تحلیل، کدنویسی، کار با تصویر و فایل.','https://chatgpt.com'],
+['Claude','Anthropic','chat','freemium','دستیار هوشمند با تمرکز بر ایمنی؛ قوی در نوشتن، تحلیل اسناد بلند و کدنویسی.','https://claude.ai'],
+['Gemini','Google','chat','freemium','دستیار چندوجهی گوگل که با خدمات Google مثل Gmail و Drive یکپارچه می‌شود.','https://gemini.google.com'],
+['Microsoft Copilot','Microsoft','chat','freemium','دستیار مایکروسافت در ویندوز، Edge و برنامه‌های Office.','https://copilot.microsoft.com'],
+['Grok','xAI','chat','freemium','دستیار شرکت xAI که با پلتفرم X (توییتر) یکپارچه است.','https://grok.com'],
+['Meta AI','Meta','chat','free','دستیار Meta در واتساپ، اینستاگرام و مسنجر، مبتنی بر مدل‌های Llama.','https://www.meta.ai'],
+['Perplexity','Perplexity AI','research','freemium','موتور پاسخ‌گوی هوشمند که با جستجوی وب و ذکر منبع جواب می‌دهد.','https://www.perplexity.ai'],
+['DeepSeek','DeepSeek','chat','free','مدل‌های چینی با وزن‌های باز؛ شناخته‌شده برای استدلال و هزینه پایین.','https://www.deepseek.com'],
+['Mistral Le Chat','Mistral AI','chat','freemium','دستیار شرکت فرانسوی Mistral AI با مدل‌های سریع و کارآمد.','https://chat.mistral.ai'],
+['Qwen','Alibaba','chat','open','خانواده مدل‌های علی‌بابا؛ بسیاری از نسخه‌ها با وزن باز منتشر شده‌اند.','https://qwen.ai'],
+['Kimi','Moonshot AI','chat','free','دستیار چینی با تمرکز بر متن‌های بسیار بلند.','https://www.kimi.com'],
+['Ernie Bot','Baidu','chat','freemium','مدل زبانی و دستیار شرکت بایدو، مخصوص بازار چین.','https://yiyan.baidu.com'],
+['Llama','Meta','chat','open','خانواده مدل‌های زبانی Meta با وزن‌های قابل دانلود برای توسعه‌دهندگان.','https://www.llama.com'],
+['Pi','Inflection AI','chat','free','دستیار گفتگویی با لحن دوستانه و شخصی.','https://pi.ai'],
+['Character.AI','Character Technologies','chat','freemium','گفتگو با شخصیت‌های هوشمند ساخته‌شده توسط کاربران.','https://character.ai'],
+['Poe','Quora','chat','freemium','پلتفرمی برای گفتگو با چندین مدل و بات در یک جا.','https://poe.com'],
+['HuggingChat','Hugging Face','chat','free','چت‌بات رایگان بر پایه مدل‌های متن‌باز.','https://huggingface.co/chat'],
+['Cohere Command','Cohere','chat','paid','مدل‌های زبانی سازمانی برای جستجو، RAG و دستیارهای شرکتی.','https://cohere.com'],
+['Replika','Luka','chat','freemium','همدم هوشمند برای گفتگوهای روزمره و شخصی.','https://replika.com'],
+['Phind','Phind','research','freemium','موتور جستجوی هوشمند مخصوص توسعه‌دهندگان.','https://www.phind.com'],
+['You.com','You.com','research','freemium','موتور جستجوی مبتنی بر AI با حالت‌های گفتگو و تحقیق.','https://you.com'],
+['Midjourney','Midjourney','image','paid','از معروف‌ترین ابزارهای تولید تصویر هنری از روی متن.','https://www.midjourney.com'],
+['DALL·E','OpenAI','image','freemium','مدل تولید تصویر OpenAI که در ChatGPT هم قابل استفاده است.','https://openai.com'],
+['Stable Diffusion','Stability AI','image','open','مدل تصویرساز متن‌باز که روی کامپیوتر شخصی هم اجرا می‌شود.','https://stability.ai'],
+['Adobe Firefly','Adobe','image','freemium','تولید تصویر و جلوه‌های مولد داخل اکوسیستم Adobe.','https://firefly.adobe.com'],
+['Leonardo.Ai','Leonardo.Ai','image','freemium','پلتفرم تولید تصویر برای هنرمندان و طراحان بازی.','https://leonardo.ai'],
+['Ideogram','Ideogram','image','freemium','تصویرساز مشهور به رندر بهتر متن داخل تصاویر.','https://ideogram.ai'],
+['FLUX','Black Forest Labs','image','open','مدل‌های تصویرساز باکیفیت؛ برخی نسخه‌ها با وزن باز در دسترس‌اند.','https://bfl.ai'],
+['Imagen','Google DeepMind','image','paid','مدل تولید تصویر گوگل که در محصولات و API آن ارائه می‌شود.','https://deepmind.google'],
+['Canva Magic Studio','Canva','image','freemium','ابزارهای AI در Canva: تولید تصویر، ویرایش جادویی و طراحی سریع.','https://www.canva.com'],
+['Playground','Playground AI','image','freemium','ویرایشگر و تصویرساز آنلاین با رابط ساده.','https://playground.com'],
+['NightCafe','NightCafe','image','freemium','جامعه و ابزار تولید هنر AI با مدل‌های مختلف.','https://creator.nightcafe.studio'],
+['Krea','Krea AI','image','freemium','تولید و ارتقای تصویر به‌صورت بلادرنگ.','https://www.krea.ai'],
+['Magnific AI','Magnific','image','paid','ارتقای کیفیت و افزودن جزئیات به تصاویر با AI.','https://magnific.ai'],
+['Topaz Photo AI','Topaz Labs','image','paid','نرم‌افزار افزایش وضوح و حذف نویز عکس و ویدیو.','https://www.topazlabs.com'],
+['Remove.bg','Canva','image','freemium','حذف خودکار پس‌زمینه تصاویر در چند ثانیه.','https://www.remove.bg'],
+['Photoroom','Photoroom','image','freemium','ویرایش عکس محصول و حذف پس‌زمینه برای فروشگاه‌ها.','https://www.photoroom.com'],
+['Recraft','Recraft','image','freemium','تولید تصویر، آیکون و وکتور با تمرکز بر طراحی.','https://www.recraft.ai'],
+['Lensa','Prisma Labs','image','paid','ویرایش و ساخت آواتار از روی عکس شخصی.','https://prisma-ai.com/lensa'],
+['Uizard','Uizard','image','freemium','تبدیل ایده یا اسکچ به طرح رابط کاربری (UI).','https://uizard.io'],
+['Meshy','Meshy','other','freemium','تولید مدل سه‌بعدی از متن یا تصویر.','https://www.meshy.ai'],
+['Sora','OpenAI','video','paid','مدل تولید ویدیوی OpenAI از روی متن و تصویر.','https://openai.com/sora'],
+['Runway','Runway','video','freemium','پلتفرم تولید و ویرایش ویدیو با AI، پرکاربرد در سینما و تبلیغات.','https://runwayml.com'],
+['Pika','Pika','video','freemium','ساخت ویدیوهای کوتاه خلاقانه از متن و تصویر.','https://pika.art'],
+['Luma Dream Machine','Luma AI','video','freemium','تولید ویدیو و محتوای سه‌بعدی از متن و تصویر.','https://lumalabs.ai'],
+['Kling','Kuaishou','video','freemium','مدل ویدیوساز شرکت کواِیشو با حرکات طبیعی.','https://klingai.com'],
+['Veo','Google DeepMind','video','paid','مدل تولید ویدیو گوگل دیپ‌مایند.','https://deepmind.google'],
+['Hailuo','MiniMax','video','freemium','ویدیوساز شرکت MiniMax با تمرکز بر حرکت واقعی.','https://hailuoai.video'],
+['Wan','Alibaba','video','open','خانواده مدل‌های ویدیوساز علی‌بابا که نسخه‌های متن‌باز هم دارد.','https://github.com/Wan-Video'],
+['HeyGen','HeyGen','video','freemium','ساخت ویدیو با آواتار هوشمند و دوبله چندزبانه.','https://www.heygen.com'],
+['Synthesia','Synthesia','video','paid','ویدیوهای آموزشی و شرکتی با مجری مجازی.','https://www.synthesia.io'],
+['D-ID','D-ID','video','freemium','متحرک‌سازی چهره و ساخت مجری مجازی از یک عکس.','https://www.d-id.com'],
+['Descript','Descript','video','freemium','ویرایش ویدیو و پادکست با ویرایش متن رونویسی‌شده.','https://www.descript.com'],
+['CapCut','ByteDance','video','freemium','ویرایشگر ویدیو با قابلیت‌های AI مثل زیرنویس خودکار.','https://www.capcut.com'],
+['OpusClip','OpusClip','video','freemium','تبدیل ویدیوهای بلند به کلیپ‌های کوتاه و وایرال.','https://www.opus.pro'],
+['InVideo AI','InVideo','video','freemium','ساخت ویدیو از روی یک پرامپت متنی.','https://invideo.io'],
+['ElevenLabs','ElevenLabs','audio','freemium','تبدیل متن به گفتار بسیار طبیعی، شبیه‌سازی صدا و دوبله.','https://elevenlabs.io'],
+['Suno','Suno','audio','freemium','ساخت آهنگ کامل با خواننده و ملودی از روی متن.','https://suno.com'],
+['Udio','Udio','audio','freemium','تولید موسیقی با AI از روی توضیح متنی.','https://www.udio.com'],
+['Whisper','OpenAI','audio','open','مدل متن‌باز تشخیص گفتار و رونویسی در زبان‌های متعدد.','https://github.com/openai/whisper'],
+['Murf AI','Murf','audio','freemium','تولید صدای گوینده حرفه‌ای برای ویدیو و آموزش.','https://murf.ai'],
+['Resemble AI','Resemble AI','audio','paid','شبیه‌سازی و تولید صدا برای سازمان‌ها.','https://www.resemble.ai'],
+['Stable Audio','Stability AI','audio','freemium','تولید موسیقی و افکت صوتی از روی متن.','https://stableaudio.com'],
+['AIVA','AIVA Technologies','audio','freemium','آهنگساز هوشمند برای موسیقی فیلم و بازی.','https://www.aiva.ai'],
+['Adobe Podcast','Adobe','audio','freemium','بهبود کیفیت صدا و حذف نویز با Enhance Speech.','https://podcast.adobe.com'],
+['Krisp','Krisp','audio','freemium','حذف نویز تماس‌ها و خلاصه‌سازی جلسات.','https://krisp.ai'],
+['Speechify','Speechify','audio','freemium','خواندن متن‌ها و کتاب‌ها با صدای طبیعی.','https://speechify.com'],
+['GitHub Copilot','GitHub / Microsoft','code','freemium','دستیار برنامه‌نویسی داخل ویرایشگر؛ تکمیل کد و چت.','https://github.com/features/copilot'],
+['Cursor','Anysphere','code','freemium','ویرایشگر کد AI-محور که کل پروژه را درک می‌کند.','https://cursor.com'],
+['Claude Code','Anthropic','code','paid','عامل برنامه‌نویسی Anthropic که در ترمینال و ابزارهای توسعه کار می‌کند.','https://www.anthropic.com/claude-code'],
+['Codex','OpenAI','code','paid','عامل کدنویسی OpenAI برای نوشتن و اصلاح کد.','https://openai.com/codex'],
+['Windsurf','Cognition','code','freemium','محیط کدنویسی عامل‌محور؛ پیش‌تر با نام Codeium.','https://windsurf.com'],
+['Replit','Replit','code','freemium','محیط برنامه‌نویسی آنلاین با Agent برای ساخت اپ از روی توضیح.','https://replit.com'],
+['Tabnine','Tabnine','code','freemium','تکمیل کد با تمرکز بر حریم خصوصی و سازمان‌ها.','https://www.tabnine.com'],
+['Amazon Q Developer','AWS','code','freemium','دستیار توسعه‌دهندگان آمازون برای کد و زیرساخت AWS.','https://aws.amazon.com/q/developer'],
+['Gemini Code Assist','Google','code','freemium','دستیار کدنویسی گوگل برای IDEها و Cloud.','https://codeassist.google'],
+['JetBrains AI','JetBrains','code','paid','دستیار هوشمند داخل IDEهای JetBrains مثل IntelliJ و PyCharm.','https://www.jetbrains.com/ai'],
+['Sourcegraph Cody','Sourcegraph','code','freemium','دستیار کد با درک بالای کدبیس‌های بزرگ.','https://sourcegraph.com/cody'],
+['Devin','Cognition','code','paid','عامل مهندس نرم‌افزار خودکار که وظایف را از ابتدا تا انتها انجام می‌دهد.','https://devin.ai'],
+['v0','Vercel','code','freemium','ساخت رابط کاربری وب (React) از روی توضیح متنی.','https://v0.dev'],
+['Bolt.new','StackBlitz','code','freemium','ساخت و اجرای اپلیکیشن وب کامل در مرورگر با پرامپت.','https://bolt.new'],
+['Lovable','Lovable','code','freemium','ساخت اپ و سایت فول‌استک با گفتگو.','https://lovable.dev'],
+['Grammarly','Grammarly','write','freemium','بررسی گرامر، سبک و لحن نوشته‌های انگلیسی.','https://www.grammarly.com'],
+['DeepL','DeepL','write','freemium','مترجم دقیق مبتنی بر AI با ابزار Write برای بازنویسی.','https://www.deepl.com'],
+['QuillBot','QuillBot','write','freemium','بازنویسی، خلاصه‌سازی و بررسی گرامر.','https://quillbot.com'],
+['Jasper','Jasper','write','paid','پلتفرم تولید محتوای بازاریابی برای تیم‌ها.','https://www.jasper.ai'],
+['Copy.ai','Copy.ai','write','freemium','نوشتن متن تبلیغاتی و خودکارسازی گردش‌کار فروش.','https://www.copy.ai'],
+['Writesonic','Writesonic','write','freemium','تولید مقاله، تبلیغ و محتوای سئو.','https://writesonic.com'],
+['Wordtune','AI21 Labs','write','freemium','بازنویسی جمله‌ها و بهبود روانی متن.','https://www.wordtune.com'],
+['Sudowrite','Sudowrite','write','paid','دستیار نویسندگان داستان و رمان.','https://www.sudowrite.com'],
+['Rytr','Rytr','write','freemium','نویسنده ساده و ارزان برای متن‌های کوتاه.','https://rytr.me'],
+['Notion AI','Notion','work','paid','دستیار هوشمند داخل Notion؛ خلاصه، نوشتن و جستجوی یادداشت‌ها.','https://www.notion.com/product/ai'],
+['Microsoft 365 Copilot','Microsoft','work','paid','دستیار AI داخل Word، Excel، PowerPoint و Outlook.','https://www.microsoft.com/microsoft-365/copilot'],
+['Gamma','Gamma','work','freemium','ساخت ارائه، سند و وب‌سایت از روی یک پرامپت.','https://gamma.app'],
+['Beautiful.ai','Beautiful.ai','work','paid','طراحی خودکار اسلایدهای حرفه‌ای.','https://www.beautiful.ai'],
+['Otter.ai','Otter.ai','work','freemium','رونویسی و خلاصه‌سازی خودکار جلسات.','https://otter.ai'],
+['Fireflies.ai','Fireflies','work','freemium','ضبط، رونویسی و تحلیل جلسات آنلاین.','https://fireflies.ai'],
+['Zapier','Zapier','work','freemium','اتصال برنامه‌ها و ساخت اتوماسیون و عامل‌های هوشمند.','https://zapier.com'],
+['n8n','n8n','work','open','پلتفرم اتوماسیون گردش‌کار با کد باز و گره‌های AI.','https://n8n.io'],
+['Reclaim.ai','Reclaim','work','freemium','زمان‌بندی هوشمند تقویم و وظایف.','https://reclaim.ai'],
+['Motion','Motion','work','paid','برنامه‌ریز خودکار روزانه و مدیریت وظایف.','https://www.usemotion.com'],
+['NotebookLM','Google','research','freemium','تحلیل اسناد شما و ساخت خلاصه، پرسش‌وپاسخ و پادکست صوتی.','https://notebooklm.google'],
+['Elicit','Elicit','research','freemium','دستیار پژوهش برای یافتن و خلاصه‌سازی مقالات علمی.','https://elicit.com'],
+['Consensus','Consensus','research','freemium','موتور جستجوی علمی که یافته‌های مقالات را جمع‌بندی می‌کند.','https://consensus.app'],
+['Scite','Scite','research','freemium','بررسی اعتبار ارجاعات علمی (حمایت‌کننده یا مخالف).','https://scite.ai'],
+['SciSpace','SciSpace','research','freemium','خواندن و توضیح مقالات علمی با چت.','https://scispace.com'],
+['Semantic Scholar','Allen Institute for AI','research','free','موتور جستجوی مقالات علمی با ابزارهای هوشمند.','https://www.semanticscholar.org'],
+['AlphaFold','Google DeepMind','research','free','پیش‌بینی ساختار سه‌بعدی پروتئین‌ها؛ پایگاه‌داده عمومی دارد.','https://alphafold.ebi.ac.uk'],
+['Hugging Face','Hugging Face','platform','open','مرکز مدل‌ها و دیتاست‌های متن‌باز و کتابخانه Transformers.','https://huggingface.co'],
+['TensorFlow','Google','platform','open','فریمورک متن‌باز یادگیری ماشین برای آموزش و استقرار مدل.','https://www.tensorflow.org'],
+['PyTorch','Meta / PyTorch Foundation','platform','open','فریمورک محبوب پژوهش و تولید مدل‌های یادگیری عمیق.','https://pytorch.org'],
+['Keras','Keras','platform','open','رابط سطح‌بالا و ساده برای ساخت شبکه‌های عصبی.','https://keras.io'],
+['scikit-learn','Community','platform','open','کتابخانه پایتون برای الگوریتم‌های کلاسیک یادگیری ماشین.','https://scikit-learn.org'],
+['LangChain','LangChain','platform','open','فریمورک ساخت اپلیکیشن‌ها و عامل‌های مبتنی بر مدل زبانی.','https://www.langchain.com'],
+['LlamaIndex','LlamaIndex','platform','open','اتصال داده‌های شما به مدل‌های زبانی (RAG).','https://www.llamaindex.ai'],
+['Ollama','Ollama','platform','open','اجرای مدل‌های زبانی روی کامپیوتر شخصی با یک دستور.','https://ollama.com'],
+['LM Studio','LM Studio','platform','free','برنامه دسکتاپ برای دانلود و اجرای محلی مدل‌های زبانی.','https://lmstudio.ai'],
+['Google Colab','Google','platform','freemium','نوت‌بوک آنلاین با GPU برای آموزش و تست مدل.','https://colab.research.google.com'],
+['Kaggle','Google','platform','free','دیتاست، مسابقه و نوت‌بوک رایگان برای علم داده.','https://www.kaggle.com'],
+['OpenAI API','OpenAI','platform','paid','دسترسی برنامه‌نویسی به مدل‌های OpenAI.','https://platform.openai.com'],
+['Claude API','Anthropic','platform','paid','دسترسی API به مدل‌های Claude برای ساخت محصولات.','https://docs.claude.com'],
+['Vertex AI','Google Cloud','platform','paid','پلتفرم ابری گوگل برای ساخت و استقرار مدل‌ها.','https://cloud.google.com/vertex-ai'],
+['Amazon Bedrock','AWS','platform','paid','دسترسی به چندین مدل پایه از طریق سرویس مدیریت‌شده AWS.','https://aws.amazon.com/bedrock'],
+['Azure AI Foundry','Microsoft','platform','paid','پلتفرم مایکروسافت برای ساخت اپ‌های AI و استفاده از مدل‌ها.','https://ai.azure.com'],
+['Weights & Biases','Weights & Biases','platform','freemium','ردیابی آزمایش‌ها و مدیریت آموزش مدل‌ها.','https://wandb.ai'],
+['Roboflow','Roboflow','platform','freemium','ساخت و استقرار مدل‌های بینایی ماشین.','https://roboflow.com'],
+['NVIDIA CUDA','NVIDIA','platform','free','پلتفرم محاسبات موازی روی GPU که پایه آموزش بیشتر مدل‌هاست.','https://developer.nvidia.com/cuda-toolkit'],
+['AutoGPT','Significant Gravitas','platform','open','از نخستین پروژه‌های متن‌باز عامل خودگردان مبتنی بر GPT.','https://github.com/Significant-Gravitas/AutoGPT'],
+['Khanmigo','Khan Academy','edu','paid','معلم و مربی هوشمند برای دانش‌آموزان و معلمان.','https://www.khanmigo.ai'],
+['Duolingo Max','Duolingo','edu','paid','تمرین مکالمه و توضیح پاسخ‌ها در یادگیری زبان.','https://www.duolingo.com'],
+['Photomath','Google','edu','freemium','حل مسئله ریاضی با دوربین و توضیح مرحله‌به‌مرحله.','https://photomath.com'],
+['Siri / Apple Intelligence','Apple','other','free','دستیار و قابلیت‌های AI در دستگاه‌های اپل.','https://www.apple.com/apple-intelligence'],
+['Amazon Alexa','Amazon','other','free','دستیار صوتی خانه هوشمند آمازون.','https://www.amazon.com/alexa'],
+['Waymo','Waymo / Alphabet','other','paid','سرویس تاکسی خودران که در برخی شهرها فعال است.','https://waymo.com']
+];
+const TL=[
+['۱۹۵۰','آزمون تورینگ','آلن تورینگ مقاله «ماشین‌های محاسباتی و هوش» را منتشر کرد و پرسش «آیا ماشین‌ها می‌توانند فکر کنند؟» را مطرح نمود.'],
+['۱۹۵۶','کارگاه دارتموث','اصطلاح هوش مصنوعی رسماً به‌عنوان یک حوزه علمی معرفی شد.'],
+['۱۹۶۶','ELIZA','جوزف وایزنبام نخستین چت‌بات معروف را ساخت که مکالمه با روان‌درمانگر را تقلید می‌کرد.'],
+['۱۹۹۷','Deep Blue','سیستم شطرنج IBM گری کاسپاروف، قهرمان جهان، را در یک مسابقه شکست داد.'],
+['۲۰۱۲','AlexNet','شبکه عصبی عمیق در مسابقه ImageNet با اختلاف زیاد برنده شد و عصر یادگیری عمیق آغاز گشت.'],
+['۲۰۱۶','AlphaGo','برنامه دیپ‌مایند لی سدول، قهرمان بازی گو، را شکست داد.'],
+['۲۰۱۷','معماری ترنسفورمر','مقاله «Attention Is All You Need» بنیان مدل‌های زبانی امروزی را گذاشت.'],
+['۲۰۲۰','GPT-3 و AlphaFold 2','GPT-3 با ۱۷۵ میلیارد پارامتر عرضه شد و AlphaFold 2 در مسابقه CASP14 مسئله تاخوردگی پروتئین را به‌شکل چشمگیری حل کرد.'],
+['۲۰۲۲','انفجار هوش مصنوعی مولد','Stable Diffusion منتشر شد و در پایان نوامبر ChatGPT عرضه شد و میلیون‌ها کاربر پیدا کرد.'],
+['۲۰۲۳','GPT-4 و رقابت مدل‌ها','GPT-4، Claude، Llama 2 و Gemini رقابت مدل‌های بزرگ را داغ کردند.'],
+['۲۰۲۴','نوبل برای هوش مصنوعی','نوبل فیزیک به هاپفیلد و هینتون و نوبل شیمی به هسابیس، جامپر و بیکر (برای AlphaFold و طراحی پروتئین) رسید.'],
+['۲۰۲۵ به بعد','عصر عامل‌ها و استدلال','مدل‌های استدلالگر، عامل‌های خودکار و ابزارهای چندوجهی به بخش عادی کار و زندگی تبدیل شدند.']
+];
+const FAQ=[
+['هوش مصنوعی چیست؟','سیستم‌های کامپیوتری که کارهای نیازمند هوش انسانی مثل یادگیری، استدلال، درک زبان و تشخیص الگو را انجام می‌دهند.'],
+['تفاوت AI، ML و DL چیست؟','AI چتر کلی است؛ ML (یادگیری ماشین) زیرمجموعه‌ای از AI که از داده یاد می‌گیرد؛ DL (یادگیری عمیق) زیرمجموعه‌ای از ML که از شبکه‌های عصبی چندلایه استفاده می‌کند.'],
+['مدل زبانی بزرگ (LLM) چیست؟','شبکه عصبی بسیار بزرگی که روی حجم عظیمی از متن آموزش دیده تا کلمه (توکن) بعدی را پیش‌بینی کند و از همین راه بنویسد، ترجمه کند و استدلال کند.'],
+['«توهم» (Hallucination) در AI یعنی چه؟','وقتی مدل اطلاعات نادرست را با اطمینان بیان می‌کند. بهتر است موارد مهم را با منبع معتبر دوباره بررسی کنید.'],
+['آیا هوش مصنوعی جای شغل‌ها را می‌گیرد؟','AI بخشی از وظایف را خودکار می‌کند و نقش‌های جدیدی می‌سازد. معمولاً افرادی که از AI استفاده می‌کنند، از کسانی که نمی‌کنند جلوترند. تأثیر دقیق بسته به صنعت متفاوت است.'],
+['از کجا یادگیری AI را شروع کنم؟','پایتون، مبانی ریاضی (جبرخطی، احتمال)، سپس scikit-learn، بعد PyTorch یا TensorFlow؛ و تمرین روی Kaggle و Google Colab. برای استفاده‌کنندگان عادی، پرامپت‌نویسی خوب شروع عالی است.'],
+['پرامپت خوب چه ویژگی‌هایی دارد؟','نقش مشخص، هدف روشن، زمینه کافی، قالب خروجی دلخواه و مثال. هرچه دقیق‌تر بنویسید، نتیجه بهتر می‌شود.'],
+['آیا اطلاعات من با AI امن است؟','بستگی به سرویس دارد. اطلاعات حساس (رمز، اسناد محرمانه) را وارد نکنید و سیاست حریم خصوصی هر ابزار را بخوانید. مدل‌های محلی مثل Ollama داده را روی دستگاه شما نگه می‌دارند.']
+];
+// Knowledge for the assistant: [keywords..., answer]
+const KB=[
+[['هوش مصنوعی چیست','هوش مصنوعی یعنی','تعریف هوش مصنوعی','ai چیست'],'<b>هوش مصنوعی (AI)</b> شاخه‌ای از علوم کامپیوتر است که سیستم‌هایی می‌سازد که کارهای نیازمند هوش انسانی را انجام دهند: یادگیری، استدلال، درک زبان، بینایی و تصمیم‌گیری. اصطلاح آن در پیشنهاد کارگاه دارتموث (۱۹۵۵) و برگزاری آن در ۱۹۵۶ مطرح شد.'],
+[['یادگیری ماشین','machine learning','ml چیست'],'<b>یادگیری ماشین (ML)</b> یعنی به‌جای نوشتن قانون‌های دستی، الگوریتم از روی داده‌ها الگو را یاد می‌گیرد. سه نوع اصلی: نظارت‌شده، بدون نظارت و تقویتی.'],
+[['یادگیری عمیق','deep learning','dl چیست'],'<b>یادگیری عمیق</b> زیرمجموعه ML است که از شبکه‌های عصبی با لایه‌های زیاد استفاده می‌کند. پایه تشخیص تصویر، گفتار و مدل‌های زبانی امروزی است.'],
+[['شبکه عصبی','neural network','نورون'],'<b>شبکه عصبی مصنوعی</b> از لایه‌هایی از «نورون‌های» ریاضی ساخته شده که وزن‌هایشان هنگام آموزش تنظیم می‌شود. الهام‌گرفته از مغز، اما بسیار ساده‌تر از آن است.'],
+[['llm','مدل زبانی','مدل زبانی بزرگ'],'<b>مدل زبانی بزرگ (LLM)</b> شبکه عصبی بزرگی است که روی متن‌های فراوان آموزش دیده تا توکن بعدی را پیش‌بینی کند. ChatGPT، Claude، Gemini و Llama نمونه‌اند.'],
+[['ترنسفورمر','transformer','attention'],'<b>ترنسفورمر</b> معماری معرفی‌شده در مقاله «Attention Is All You Need» (۲۰۱۷) است. با مکانیزم توجه (Attention) روابط بین بخش‌های ورودی را مدل می‌کند و ستون فقرات بیشتر مدل‌های زبانی است.'],
+[['gpt','جی پی تی'],'<b>GPT</b> یعنی Generative Pre-trained Transformer؛ خانواده مدل‌های زبانی OpenAI که پایه ChatGPT هستند.'],
+[['پرامپت','prompt','دستور نویسی'],'<b>پرامپت</b> همان ورودی متنی شماست. نکات: نقش بدهید، هدف را دقیق بگویید، زمینه و قالب خروجی را مشخص کنید، مثال بدهید و در صورت نیاز مرحله‌به‌مرحله اصلاح کنید.'],
+[['توهم','hallucination','اشتباه می کند','غلط'],'<b>توهم (Hallucination)</b> یعنی مدل جواب نادرست را با اطمینان می‌دهد. راه‌حل: منبع بخواهید، از ابزارهای جستجودار استفاده کنید و موارد مهم را راستی‌آزمایی کنید.'],
+[['agi','هوش عمومی'],'<b>AGI (هوش مصنوعی عمومی)</b> سیستمی فرضی است که مانند انسان در بسیاری از کارها یاد بگیرد و استدلال کند. هنوز تعریف دقیق و توافقی برایش نیست و پژوهشگران درباره زمان رسیدن به آن اختلاف نظر دارند.'],
+[['asi','ابر هوش','ابرهوش'],'<b>ASI (ابرهوش مصنوعی)</b> مفهومی نظری از هوشی است که از همه انسان‌ها در همه زمینه‌ها بهتر باشد؛ فعلاً موضوع بحث فلسفی و پژوهشی ایمنی است.'],
+[['بینایی کامپیوتر','بینایی ماشین','computer vision'],'<b>بینایی کامپیوتر</b> یعنی درک تصویر و ویدیو توسط ماشین: تشخیص اشیا، چهره، تصویربرداری پزشکی، خودروهای خودران و کنترل کیفیت.'],
+[['nlp','پردازش زبان طبیعی'],'<b>NLP</b> پردازش زبان طبیعی است: ترجمه ماشینی، خلاصه‌سازی، تحلیل احساسات، پرسش و پاسخ و چت‌بات‌ها.'],
+[['rag','بازیابی','retrieval'],'<b>RAG</b> (Retrieval-Augmented Generation) یعنی مدل پیش از پاسخ، از یک پایگاه دانش یا اسناد شما اطلاعات مرتبط را بازیابی می‌کند تا پاسخ دقیق‌تر و مستندتر شود.'],
+[['fine tuning','فاین تیونینگ','تنظیم دقیق'],'<b>Fine-tuning</b> یعنی ادامه آموزش یک مدل از پیش‌آموزش‌دیده روی داده‌های تخصصی تا برای یک وظیفه یا سبک خاص بهتر شود.'],
+[['توکن','token'],'<b>توکن</b> واحد پردازش مدل زبانی است؛ تکه‌ای از کلمه یا نویسه. محدودیت طول متن و هزینه API معمولاً با توکن سنجیده می‌شود.'],
+[['دیپ فیک','deepfake'],'<b>دیپ‌فیک</b> تصویر، صدا یا ویدیوی ساختگی واقع‌نما با AI است. می‌تواند برای سرگرمی یا کلاهبرداری استفاده شود؛ همیشه منبع محتوا را بررسی کنید.'],
+[['اخلاق','ایمنی','خطر','سوگیری','bias'],'<b>اخلاق و ایمنی AI</b> شامل سوگیری داده‌ها، حریم خصوصی، شفافیت، اطلاعات نادرست، امنیت و کنترل‌پذیری سیستم‌هاست. تنظیم‌گری و پژوهش ایمنی هر دو در حال رشدند.'],
+[['شغل','بیکار','آینده کار'],'AI برخی وظایف را خودکار می‌کند و نقش‌های جدیدی هم می‌سازد. تأثیر بسته به صنعت فرق دارد؛ مهارت‌هایی مثل تفکر انتقادی، تخصص حوزه‌ای و کار با ابزارهای AI ارزشمندتر می‌شوند.'],
+[['شروع','یاد بگیرم','یادگیری هوش مصنوعی','مسیر یادگیری','آموزش ai'],'مسیر پیشنهادی: ۱) پایتون ۲) ریاضیات پایه (جبرخطی، آمار، احتمال) ۳) scikit-learn ۴) PyTorch یا TensorFlow ۵) پروژه‌های عملی در Kaggle و Colab ۶) آشنایی با LLMها، RAG و عامل‌ها.'],
+[['یادگیری تقویتی','reinforcement'],'<b>یادگیری تقویتی (RL)</b> یعنی عامل با تعامل با محیط و دریافت پاداش یاد می‌گیرد؛ مثل AlphaGo و آموزش ربات‌ها.'],
+[['متن باز','open source','اوپن سورس','وزن باز'],'مدل‌های <b>متن‌باز / وزن‌باز</b> قابل دانلود و اجرای محلی‌اند، مثل Llama، Qwen، Stable Diffusion و Whisper. در این سایت فیلتر «فقط متن‌باز» را امتحان کنید.'],
+[['عامل','agent','ایجنت'],'<b>عامل هوشمند (AI Agent)</b> سیستمی است که با مدل زبانی و ابزارها (جستجو، کد، مرورگر…) کارهای چندمرحله‌ای را برنامه‌ریزی و اجرا می‌کند.'],
+[['چند وجهی','multimodal'],'<b>مدل چندوجهی</b> مدلی است که چند نوع داده (متن، تصویر، صدا، ویدیو) را هم‌زمان می‌فهمد یا تولید می‌کند.'],
+[['دیفیوژن','diffusion'],'<b>مدل‌های دیفیوژن</b> با حذف تدریجی نویز از یک تصویر تصادفی، تصویر یا ویدیوی جدید می‌سازند؛ پایه Stable Diffusion و بسیاری از تصویرسازهاست.'],
+[['تورینگ','turing'],'<b>آزمون تورینگ</b> (۱۹۵۰) پیشنهاد آلن تورینگ است: اگر ماشین در گفتگو از انسان تشخیص داده نشود، می‌توان گفت «هوشمند» رفتار کرده است.'],
+[['تاریخچه','تاریخ ai','اولین'],'مهم‌ترین نقاط: ۱۹۵۰ آزمون تورینگ، ۱۹۵۶ دارتموث، ۱۹۹۷ Deep Blue، ۲۰۱۲ AlexNet، ۲۰۱۶ AlphaGo، ۲۰۱۷ ترنسفورمر، ۲۰۲۲ ChatGPT و Stable Diffusion، ۲۰۲۴ نوبل برای کارهای مرتبط با AI. بخش «تاریخچه» را ببینید.'],
+[['gpu','سخت افزار','nvidia','کارت گرافیک'],'آموزش مدل‌های بزرگ به محاسبات موازی نیاز دارد؛ به همین دلیل GPUها (مثل NVIDIA) و شتاب‌دهنده‌های مشابه نقش کلیدی دارند.'],
+[['تفاوت ai و ml','تفاوت ai ml dl','ai ml dl'],'AI چتر کلی است ⟵ ML زیرمجموعه آن (یادگیری از داده) ⟵ DL زیرمجموعه ML (شبکه‌های عصبی عمیق) ⟵ هوش مصنوعی مولد کاربردی از DL برای تولید محتواست.']
+];
+const CATKEYS={
+chat:['چت','گفتگو','مکالمه','دستیار','چت بات','مدل زبانی'],
+image:['عکس','تصویر','نقاشی','لوگو','طراحی','پوستر','هنری'],
+video:['ویدیو','ویدئو','فیلم','کلیپ','انیمیشن','ریلز'],
+audio:['صدا','موسیقی','آهنگ','صوت','پادکست','گوینده','رونویسی','تبدیل گفتار','صحبت'],
+code:['کد','کدنویسی','برنامه نویسی','برنامه نویس','اپ','اپلیکیشن','سایت','وب سایت','توسعه'],
+write:['نوشتن','متن','مقاله','ترجمه','گرامر','ویرایش','محتوا','بازنویسی'],
+work:['ارائه','اسلاید','جلسه','بهره وری','اتوماسیون','تقویم','خودکار','کار روزانه'],
+research:['تحقیق','پژوهش','مقاله علمی','منبع','جستجو','دانشگاه','پایان نامه'],
+platform:['فریمورک','کتابخانه','api','آموزش مدل','ابر','لوکال','محلی','پلتفرم'],
+edu:['آموزش','درس','زبان','ریاضی','مدرسه','معلم','دانش آموز'],
+other:['سه بعدی','خودران','خانه هوشمند','دستیار صوتی']
+};
+const ALIAS={'چت جی پی تی':'chatgpt','کلود':'claude','جمینی':'gemini','میدجرنی':'midjourney','پرپلکسیتی':'perplexity','دیپ سیک':'deepseek','کوپایلوت':'copilot','کرسر':'cursor','سورا':'sora','الون لبز':'elevenlabs','سونو':'suno'};
+ 
+/* ============ HELPERS ============ */
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const norm=s=>String(s).toLowerCase().replace(/[يى]/g,'ی').replace(/ك/g,'ک').replace(/[\u200c\u200f]/g,' ').replace(/[\u064B-\u065F]/g,'').replace(/[؟?!.,،؛:;()"'«»\-_\/·…]/g,' ').replace(/\s+/g,' ').trim();
+const PRICE={free:'رایگان',freemium:'فریمیوم',paid:'پولی',open:'متن‌باز'};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ 
+/* ============ PRELOADER ============ */
+(()=>{const l=$('#loader .lt');'ELTIA'.split('').forEach((c,i)=>{const s=document.createElement('span');s.textContent=c;s.style.animationDelay=i*.12+'s';l.appendChild(s)});
+window.addEventListener('load',()=>setTimeout(()=>$('#loader').classList.add('done'),1700));setTimeout(()=>$('#loader').classList.add('done'),3500)})();
+ 
+/* ============ THEME ============ */
+let theme=localStorage.getItem('eltia-theme')||'dark';
+document.documentElement.dataset.theme=theme;
+$('#theme').onclick=()=>{theme=theme==='dark'?'light':'dark';document.documentElement.dataset.theme=theme;try{localStorage.setItem('eltia-theme',theme)}catch(e){}};
+$('#burger').onclick=()=>$('#links').classList.toggle('open');
+$$('#links a').forEach(a=>a.onclick=()=>$('#links').classList.remove('open'));
+$('#yr').textContent=new Date().getFullYear();
+ 
+/* ============ BALLS (2 white, 1 black) ============ */
+(()=>{
+  const cv=$('#balls'),ctx=cv.getContext('2d');let W,H,dpr;
+  const balls=[{c:'w'},{c:'w'},{c:'b'}];
+  const mouse={x:-999,y:-999};
+  function size(){dpr=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);
+    const base=Math.min(W,H);balls[0].r=base*.16;balls[1].r=base*.11;balls[2].r=base*.14}
+  size();addEventListener('resize',size);
+  balls.forEach((b,i)=>{b.x=W*(.2+i*.3);b.y=H*(.3+i*.2);const a=Math.random()*6.28,s=1.1+Math.random()*.6;b.vx=Math.cos(a)*s;b.vy=Math.sin(a)*s;b.s=s});
+  addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY});
+  addEventListener('touchmove',e=>{mouse.x=e.touches[0].clientX;mouse.y=e.touches[0].clientY},{passive:true});
+  function step(){
+    ctx.clearRect(0,0,W,H);const dark=document.documentElement.dataset.theme==='dark';
+    for(const b of balls){
+      b.x+=b.vx;b.y+=b.vy;
+      if(b.x<b.r){b.x=b.r;b.vx=Math.abs(b.vx)}if(b.x>W-b.r){b.x=W-b.r;b.vx=-Math.abs(b.vx)}
+      if(b.y<b.r){b.y=b.r;b.vy=Math.abs(b.vy)}if(b.y>H-b.r){b.y=H-b.r;b.vy=-Math.abs(b.vy)}
+      const dx=b.x-mouse.x,dy=b.y-mouse.y,d=Math.hypot(dx,dy);
+      if(d<b.r+140&&d>0){b.vx+=dx/d*.12;b.vy+=dy/d*.12}
+      const sp=Math.hypot(b.vx,b.vy);if(sp>5){b.vx*=5/sp;b.vy*=5/sp}
+      if(sp>b.s){b.vx*=.995;b.vy*=.995}else if(sp<b.s*.8){b.vx*=1.01;b.vy*=1.01}
+    }
+    for(let i=0;i<3;i++)for(let j=i+1;j<3;j++){
+      const a=balls[i],b=balls[j],dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy),m=a.r+b.r;
+      if(d<m&&d>0){const nx=dx/d,ny=dy/d,ma=a.r*a.r,mb=b.r*b.r,ov=m-d;
+        a.x-=nx*ov*mb/(ma+mb);a.y-=ny*ov*mb/(ma+mb);b.x+=nx*ov*ma/(ma+mb);b.y+=ny*ov*ma/(ma+mb);
+        const rv=(b.vx-a.vx)*nx+(b.vy-a.vy)*ny;if(rv<0){const imp=2*rv/(ma+mb);a.vx+=imp*mb*nx;a.vy+=imp*mb*ny;b.vx-=imp*ma*nx;b.vy-=imp*ma*ny}}
+    }
+    for(const b of balls){
+      ctx.save();const g=ctx.createRadialGradient(b.x-b.r*.35,b.y-b.r*.35,b.r*.08,b.x,b.y,b.r);
+      if(b.c==='w'){
+        if(dark){g.addColorStop(0,'#fff');g.addColorStop(.55,'#d9d9d9');g.addColorStop(1,'#7d7d7d');ctx.shadowColor='rgba(255,255,255,.35)';ctx.shadowBlur=70}
+        else{g.addColorStop(0,'#fff');g.addColorStop(.6,'#ececec');g.addColorStop(1,'#b0b0b0');ctx.shadowColor='rgba(0,0,0,.28)';ctx.shadowBlur=50;ctx.shadowOffsetY=18}
+      }else{
+        g.addColorStop(0,'#4a4a4a');g.addColorStop(.5,'#0d0d0d');g.addColorStop(1,'#000');
+        ctx.shadowColor=dark?'rgba(255,255,255,.25)':'rgba(0,0,0,.45)';ctx.shadowBlur=dark?60:50;if(!dark)ctx.shadowOffsetY=18;
+      }
+      ctx.fillStyle=g;ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,6.2832);ctx.fill();
+      if(b.c==='b'&&dark){ctx.shadowBlur=0;ctx.strokeStyle='rgba(255,255,255,.55)';ctx.lineWidth=2;ctx.stroke()}
+      ctx.restore();
+    }
+    requestAnimationFrame(step);
+  }
+  step();
+})();
+ 
+/* ============ CURSOR / PROGRESS / NAV ============ */
+const cur=$('#cursor');addEventListener('mousemove',e=>{cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px'});
+addEventListener('scroll',()=>{
+  const h=document.documentElement,p=scrollY/(h.scrollHeight-h.clientHeight)*100;$('#progress').style.width=p+'%';
+  $('#nav').classList.toggle('scrolled',scrollY>40);$('#top').classList.toggle('show',scrollY>600);
+  let cur='home';$$('section,header').forEach(s=>{if(scrollY>=s.offsetTop-220)cur=s.id});
+  $$('#links a').forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur));
+},{passive:true});
+$('#top').onclick=()=>scrollTo({top:0});
+ 
+/* ============ TYPED ============ */
+(()=>{const L=['همه‌چیز درباره هوش مصنوعی، در یک جا.','بیش از ۱۰۰ ابزار AI؛ دسته‌بندی‌شده و قابل جستجو.','با دستیار هوشمند ELTIA گفتگو کنید.','آینده را امروز بشناسید.'];let i=0,j=0,del=false;const el=$('#typed');
+  (function t(){const s=L[i];el.textContent=s.slice(0,j);if(!del&&j<s.length){j++;setTimeout(t,55)}else if(!del){del=true;setTimeout(t,1600)}else if(j>0){j--;setTimeout(t,25)}else{del=false;i=(i+1)%L.length;setTimeout(t,300)}})()})();
+ 
+/* ============ REVEAL + COUNTERS ============ */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+function observe(){$$('.reveal:not(.in)').forEach((el,i)=>{el.style.transitionDelay=(i%4)*.08+'s';io.observe(el)})}
+function counter(el){const n=+el.dataset.n;let c=0;const st=Math.max(1,Math.ceil(n/50));const iv=setInterval(()=>{c=Math.min(n,c+st);el.textContent=c+(n>=30?'+':'');if(c>=n)clearInterval(iv)},30)}
+const cio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){counter(e.target);cio.unobserve(e.target)}}),{threshold:.5});
+ 
+/* ============ BUILD STATIC ============ */
+$('#s-tools').dataset.n=T.length;$('#s-cats').dataset.n=Object.keys(CATS).length;$('#s-faq').dataset.n=KB.length;
+$$('.stat b').forEach(b=>cio.observe(b));
+$('#mq').innerHTML=[...T,...T].map(t=>`<span>${esc(t[0])}</span>`).join('');
+$('#tl').innerHTML=TL.map(t=>`<div class="tl reveal"><div class="card"><div class="yr">${t[0]}</div><h3>${t[1]}</h3><p>${t[2]}</p></div></div>`).join('');
+$('#faq').innerHTML=FAQ.map(f=>`<div class="q reveal"><button>${f[0]}<i>+</i></button><div class="a">${f[1]}</div></div>`).join('');
+$$('.q button').forEach(b=>b.onclick=()=>{const q=b.parentElement,o=q.classList.contains('open');$$('.q').forEach(x=>x.classList.remove('open'));if(!o)q.classList.add('open')});
+ 
+/* ============ TOOLS DIRECTORY ============ */
+let cat='all';
+const chips=$('#chips');chips.innerHTML=`<button class="chip on" data-c="all">همه (${T.length})</button>`+Object.entries(CATS).map(([k,v])=>`<button class="chip" data-c="${k}">${v} (${T.filter(t=>t[2]===k).length})</button>`).join('');
+chips.onclick=e=>{const b=e.target.closest('.chip');if(!b)return;cat=b.dataset.c;$$('.chip').forEach(c=>c.classList.toggle('on',c===b));render()};
+['#q','#price','#sort'].forEach(s=>$(s).addEventListener('input',render));
+function render(){
+  const q=norm($('#q').value),p=$('#price').value,so=$('#sort').value;
+  let list=T.map((t,i)=>({t,i})).filter(({t})=>{
+    if(cat!=='all'&&t[2]!==cat)return false;
+    if(p==='free'&&t[3]==='paid')return false;if(p==='open'&&t[3]!=='open')return false;
+    if(q&&!norm(t.slice(0,5).join(' ')+' '+CATS[t[2]]).includes(q))return false;return true});
+  if(so==='az')list.sort((a,b)=>a.t[0].localeCompare(b.t[0]));
+  $('#count').textContent=`${list.length} ابزار از ${T.length}`;
+  $('#empty').style.display=list.length?'none':'block';
+  $('#grid').innerHTML=list.map(({t},n)=>`<article class="card tool" style="animation-delay:${Math.min(n,18)*.04}s">
+    <div class="top"><h3>${esc(t[0])}</h3><span class="badge ${t[3]!=='paid'?'free':''}">${PRICE[t[3]]}</span></div>
+    <div class="co">${esc(t[1])}</div><p class="ds">${esc(t[4])}</p>
+    <div class="ft"><span>${CATS[t[2]]}</span><a href="${esc(t[5])}" target="_blank" rel="noopener noreferrer">بازدید ↗</a></div></article>`).join('');
+  tilt();
+}
+function tilt(){$$('.card').forEach(c=>{if(c._t)return;c._t=1;
+  c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;c.style.setProperty('--mx',x+'px');c.style.setProperty('--my',y+'px');
+    if(matchMedia('(hover:hover)').matches)c.style.transform=`perspective(800px) rotateX(${(y/r.height-.5)*-8}deg) rotateY(${(x/r.width-.5)*8}deg) translateY(-4px)`});
+  c.addEventListener('mouseleave',()=>c.style.transform='')})}
+ 
+/* ============ ASSISTANT (local knowledge engine) ============ */
+// اگر بخواهید به یک مدل زبانی واقعی وصل شود، آدرس بک‌اند خودتان را اینجا بگذارید.
+// بک‌اند باید JSON به شکل {reply:"..."} برگرداند. ورودی: {message, history}
+const AI_ENDPOINT='';
+const msgs=$('#msgs'),hist=[];
+function add(html,who){const d=document.createElement('div');d.className='m '+who;d.innerHTML=html;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;return d}
+function mini(t){return `<span class="mini"><strong>${esc(t[0])}</strong> <em>${esc(t[1])} · ${PRICE[t[3]]}</em><br>${esc(t[4])} <a href="${esc(t[5])}" target="_blank" rel="noopener noreferrer">سایت ↗</a></span>`}
+function findTools(q){
+  const pq=' '+q+' ';let found=[];
+  for(const [fa,en] of Object.entries(ALIAS))if(pq.includes(' '+norm(fa)+' '))q+=' '+en;
+  const pq2=' '+q+' ';
+  T.forEach(t=>{const n=norm(t[0]);if(n.length>1&&pq2.includes(' '+n+' '))found.push(t)});
+  return found;
+}
+function answer(raw){
+  const q=norm(raw);
+  if(!q)return 'سؤالتان را بنویسید 🙂';
+  if(/^(سلام|درود|hi|hello|hey|وقت بخیر|صبح بخیر|عصر بخیر)/.test(q))return 'سلام! 👋 من <b>تیا</b> هستم، دستیار ELTIA. درباره ابزارهای AI، مفاهیم (مثل LLM یا ترنسفورمر) و تاریخچه هوش مصنوعی بپرسید.';
+  if(/(مرسی|ممنون|تشکر|thanks)/.test(q))return 'خواهش می‌کنم! اگر سؤال دیگری دارید در خدمتم ✨';
+  if(/(تو کی|کی هستی|اسمت|خودت رو معرفی|who are you)/.test(q))return 'من <b>تیا</b> هستم، دستیار داخلی سایت ELTIA. پاسخ‌هایم از پایگاه دانش همین سایت (بیش از '+T.length+' ابزار و '+KB.length+' مفهوم) می‌آید و برای اطلاعات لحظه‌ای مثل قیمت‌ها باید سایت رسمی هر ابزار را ببینید.';
+  const tools=findTools(q);
+  const rec=/(بهترین|پیشنهاد|معرفی|ابزار|کدوم|کدام|چی|چه|برای|لیست|رایگان|مناسب)/.test(q);
+  // category scoring
+  let best=null,bs=0;for(const [k,kws] of Object.entries(CATKEYS)){let s=0;kws.forEach(w=>{if((' '+q+' ').includes(' '+norm(w)+' ')||q.includes(norm(w)))s+=norm(w).length>2?2:1});if(s>bs){bs=s;best=k}}
+  // KB scoring
+  let kb=null,ks=0;KB.forEach(e=>{let s=0;e[0].forEach(w=>{const n=norm(w);if(q.includes(n))s+=n.length>3?3:2});if(s>ks){ks=s;kb=e}});
+  if(tools.length&&!(rec&&bs>ks&&!tools.length)){
+    const t=tools[0];const rel=T.filter(x=>x[2]===t[2]&&x!==t).slice(0,3);
+    return `<b>${esc(t[0])}</b> از شرکت <b>${esc(t[1])}</b> در دسته «${CATS[t[2]]}»:<br>${esc(t[4])}${mini(t)}`+(tools[1]?`همچنین: ${mini(tools[1])}`:'')+`<br>گزینه‌های مرتبط:${rel.map(mini).join('')}`;
+  }
+  if(ks>=3&&(!rec||ks>=bs*1.5||bs===0))return kb[1];
+  if(best&&bs>0){
+    let l=T.filter(t=>t[2]===best);
+    if(/رایگان/.test(q))l=l.filter(t=>t[3]!=='paid');
+    if(/(متن باز|اوپن)/.test(q))l=l.filter(t=>t[3]==='open');
+    if(!l.length)l=T.filter(t=>t[2]===best);
+    return `برای «${CATS[best]}» این‌ها را پیشنهاد می‌کنم:${l.slice(0,5).map(mini).join('')}${l.length>5?`<br>${l.length-5} ابزار دیگر هم در بخش «ابزارها» (فیلتر ${CATS[best]}) هست.`:''}`;
+  }
+  if(ks>0)return kb[1];
+  if(/(چند|تعداد).*(ابزار)/.test(q))return `در حال حاضر <b>${T.length}</b> ابزار در ${Object.keys(CATS).length} دسته در ELTIA ثبت شده است.`;
+  return 'این را دقیق در پایگاه دانشم پیدا نکردم 🤔 می‌توانید این‌طور بپرسید:<ul><li>«بهترین ابزار برای ساخت ویدیو»</li><li>«ChatGPT چیست؟»</li><li>«ترنسفورمر یعنی چه؟»</li><li>«ابزارهای رایگان کدنویسی»</li></ul>';
+}
+async function send(text){
+  add(esc(text),'user');hist.push({role:'user',content:text});
+  const d=add('<span class="dots"><span></span><span></span><span></span></span>','bot');
+  let rep;
+  if(AI_ENDPOINT){try{const r=await fetch(AI_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text,history:hist.slice(-10)})});rep=esc((await r.json()).reply).replace(/\n/g,'<br>')}catch(e){rep=null}}
+  if(!rep){await new Promise(r=>setTimeout(r,500+Math.random()*500));rep=answer(text)}
+  d.innerHTML=rep;hist.push({role:'assistant',content:rep});msgs.scrollTop=msgs.scrollHeight;
+}
+$('#cf').onsubmit=e=>{e.preventDefault();const v=$('#ci').value.trim();if(!v)return;$('#ci').value='';send(v)};
+const SG=['بهترین ابزار برای ساخت ویدیو','ابزارهای رایگان کدنویسی','ترنسفورمر چیست؟','Midjourney چیست؟','از کجا AI را شروع کنم؟','ابزار برای تحقیق علمی','تفاوت AI و ML'];
+$('#sugg').innerHTML=SG.map(s=>`<button class="chip" type="button">${s}</button>`).join('');
+$('#sugg').onclick=e=>{const b=e.target.closest('.chip');if(b)send(b.textContent)};
+add('سلام! 👋 من <b>تیا</b> هستم، هوش مصنوعی سایت ELTIA. درباره ابزارها، مفاهیم و تاریخچه AI از من بپرسید یا یکی از پیشنهادهای پایین را انتخاب کنید.','bot');
+ 
+render();observe();
+</script>
+</body>
+</html>
